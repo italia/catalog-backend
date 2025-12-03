@@ -1,0 +1,21 @@
+CREATE TABLE code_hostings (
+    id uuid DEFAULT uuidv7.uuidv7 () PRIMARY KEY,
+    updated_at timestamp with time zone,
+    url text NOT NULL,
+    is_group boolean NOT NULL DEFAULT TRUE
+);
+
+CREATE TRIGGER code_hostings_moddatetime
+    BEFORE UPDATE ON code_hostings
+    FOR EACH ROW
+    EXECUTE PROCEDURE extensions.moddatetime (updated_at);
+
+CREATE FUNCTION code_hostings_created_at (rec code_hostings)
+    RETURNS timestamp with time zone IMMUTABLE STRICT
+    LANGUAGE sql
+    SET search_path = '' RETURN uuidv7.uuidv7_extract_timestamp (
+        rec.id
+);
+
+COMMENT ON FUNCTION code_hostings_created_at IS e'@graphql({"name": "createdAt"})';
+
