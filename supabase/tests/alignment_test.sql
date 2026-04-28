@@ -14,7 +14,7 @@ SELECT
 SELECT
     results_eq ($$
         SELECT
-            pg_column_size(ROW ('00000000-0000-0000-0000-000000000000', 'epoch', 'https://github.com/italia/foo', '{"publiccodeYmlVersion":"0.5"}', TRUE)::softwares) $$, $$
+            pg_column_size(ROW ('00000000-0000-0000-0000-000000000000', 'epoch', 'https://github.com/italia/foo', '{"publiccodeYmlVersion":"0.5"}', TRUE)::software) $$, $$
         VALUES (115) $$, 'Size of a “software” row');
 SELECT
     *

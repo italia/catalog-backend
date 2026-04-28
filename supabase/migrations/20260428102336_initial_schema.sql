@@ -77,7 +77,7 @@ CREATE TABLE "public"."publishers" (
     "active" boolean NOT NULL DEFAULT TRUE
 );
 
-CREATE TABLE "public"."softwares" (
+CREATE TABLE "public"."software" (
     "id" uuid NOT NULL DEFAULT uuidv7.uuidv7 (),
     "updated_at" timestamp with time zone,
     "url" text NOT NULL,
@@ -89,7 +89,7 @@ CREATE UNIQUE INDEX code_hostings_pkey ON public.code_hostings USING btree (id);
 
 CREATE UNIQUE INDEX publishers_pkey ON public.publishers USING btree (id);
 
-CREATE UNIQUE INDEX softwares_pkey ON public.softwares USING btree (id);
+CREATE UNIQUE INDEX software_pkey ON public.software USING btree (id);
 
 ALTER TABLE "public"."code_hostings"
     ADD CONSTRAINT "code_hostings_pkey" PRIMARY KEY USING INDEX "code_hostings_pkey",
@@ -98,8 +98,8 @@ ALTER TABLE "public"."code_hostings"
 ALTER TABLE "public"."publishers"
     ADD CONSTRAINT "publishers_pkey" PRIMARY KEY USING INDEX "publishers_pkey";
 
-ALTER TABLE "public"."softwares"
-    ADD CONSTRAINT "softwares_pkey" PRIMARY KEY USING INDEX "softwares_pkey";
+ALTER TABLE "public"."software"
+    ADD CONSTRAINT "software_pkey" PRIMARY KEY USING INDEX "software_pkey";
 
 SET check_function_bodies = OFF;
 
@@ -117,7 +117,7 @@ CREATE OR REPLACE FUNCTION public.publishers_created_at (rec public.publishers)
     SET search_path TO '' RETURN uuidv7.uuidv7_extract_timestamp ((rec).id
 );
 
-CREATE OR REPLACE FUNCTION public.softwares_created_at (rec public.softwares)
+CREATE OR REPLACE FUNCTION public.software_created_at (rec public.software)
     RETURNS timestamp with time zone
     LANGUAGE sql
     IMMUTABLE STRICT
@@ -208,47 +208,47 @@ GRANT TRUNCATE ON TABLE "public"."publishers" TO "service_role";
 
 GRANT UPDATE ON TABLE "public"."publishers" TO "service_role";
 
-GRANT DELETE ON TABLE "public"."softwares" TO "anon";
+GRANT DELETE ON TABLE "public"."software" TO "anon";
 
-GRANT INSERT ON TABLE "public"."softwares" TO "anon";
+GRANT INSERT ON TABLE "public"."software" TO "anon";
 
-GRANT REFERENCES ON TABLE "public"."softwares" TO "anon";
+GRANT REFERENCES ON TABLE "public"."software" TO "anon";
 
-GRANT SELECT ON TABLE "public"."softwares" TO "anon";
+GRANT SELECT ON TABLE "public"."software" TO "anon";
 
-GRANT TRIGGER ON TABLE "public"."softwares" TO "anon";
+GRANT TRIGGER ON TABLE "public"."software" TO "anon";
 
-GRANT TRUNCATE ON TABLE "public"."softwares" TO "anon";
+GRANT TRUNCATE ON TABLE "public"."software" TO "anon";
 
-GRANT UPDATE ON TABLE "public"."softwares" TO "anon";
+GRANT UPDATE ON TABLE "public"."software" TO "anon";
 
-GRANT DELETE ON TABLE "public"."softwares" TO "authenticated";
+GRANT DELETE ON TABLE "public"."software" TO "authenticated";
 
-GRANT INSERT ON TABLE "public"."softwares" TO "authenticated";
+GRANT INSERT ON TABLE "public"."software" TO "authenticated";
 
-GRANT REFERENCES ON TABLE "public"."softwares" TO "authenticated";
+GRANT REFERENCES ON TABLE "public"."software" TO "authenticated";
 
-GRANT SELECT ON TABLE "public"."softwares" TO "authenticated";
+GRANT SELECT ON TABLE "public"."software" TO "authenticated";
 
-GRANT TRIGGER ON TABLE "public"."softwares" TO "authenticated";
+GRANT TRIGGER ON TABLE "public"."software" TO "authenticated";
 
-GRANT TRUNCATE ON TABLE "public"."softwares" TO "authenticated";
+GRANT TRUNCATE ON TABLE "public"."software" TO "authenticated";
 
-GRANT UPDATE ON TABLE "public"."softwares" TO "authenticated";
+GRANT UPDATE ON TABLE "public"."software" TO "authenticated";
 
-GRANT DELETE ON TABLE "public"."softwares" TO "service_role";
+GRANT DELETE ON TABLE "public"."software" TO "service_role";
 
-GRANT INSERT ON TABLE "public"."softwares" TO "service_role";
+GRANT INSERT ON TABLE "public"."software" TO "service_role";
 
-GRANT REFERENCES ON TABLE "public"."softwares" TO "service_role";
+GRANT REFERENCES ON TABLE "public"."software" TO "service_role";
 
-GRANT SELECT ON TABLE "public"."softwares" TO "service_role";
+GRANT SELECT ON TABLE "public"."software" TO "service_role";
 
-GRANT TRIGGER ON TABLE "public"."softwares" TO "service_role";
+GRANT TRIGGER ON TABLE "public"."software" TO "service_role";
 
-GRANT TRUNCATE ON TABLE "public"."softwares" TO "service_role";
+GRANT TRUNCATE ON TABLE "public"."software" TO "service_role";
 
-GRANT UPDATE ON TABLE "public"."softwares" TO "service_role";
+GRANT UPDATE ON TABLE "public"."software" TO "service_role";
 
 CREATE TRIGGER code_hostings_moddatetime
     BEFORE UPDATE ON public.code_hostings
@@ -260,8 +260,8 @@ CREATE TRIGGER publishers_moddatetime
     FOR EACH ROW
     EXECUTE FUNCTION extensions.moddatetime ('updated_at');
 
-CREATE TRIGGER softwares_moddatetime
-    BEFORE UPDATE ON public.softwares
+CREATE TRIGGER software_moddatetime
+    BEFORE UPDATE ON public.software
     FOR EACH ROW
     EXECUTE FUNCTION extensions.moddatetime ('updated_at');
 
