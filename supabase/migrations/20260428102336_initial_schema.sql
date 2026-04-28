@@ -61,6 +61,7 @@ $function$;
 
 CREATE TABLE "public"."code_hostings" (
     "id" uuid NOT NULL DEFAULT uuidv7.uuidv7 (),
+    "publisher_id" uuid NOT NULL,
     "updated_at" timestamp with time zone,
     "url" text NOT NULL,
     "is_group" boolean NOT NULL DEFAULT TRUE
@@ -91,7 +92,8 @@ CREATE UNIQUE INDEX publishers_pkey ON public.publishers USING btree (id);
 CREATE UNIQUE INDEX softwares_pkey ON public.softwares USING btree (id);
 
 ALTER TABLE "public"."code_hostings"
-    ADD CONSTRAINT "code_hostings_pkey" PRIMARY KEY USING INDEX "code_hostings_pkey";
+    ADD CONSTRAINT "code_hostings_pkey" PRIMARY KEY USING INDEX "code_hostings_pkey",
+    ADD CONSTRAINT "code_hostings_publisher_id_fkey" FOREIGN KEY (publisher_id) REFERENCES public.publishers (id) NOT valid, VALIDATE CONSTRAINT "code_hostings_publisher_id_fkey";
 
 ALTER TABLE "public"."publishers"
     ADD CONSTRAINT "publishers_pkey" PRIMARY KEY USING INDEX "publishers_pkey";
