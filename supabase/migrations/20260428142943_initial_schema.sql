@@ -89,6 +89,8 @@ CREATE TABLE "public"."software" (
 
 CREATE UNIQUE INDEX code_hostings_pkey ON public.code_hostings USING btree (id);
 
+CREATE INDEX code_hostings_publisher_id_idx ON public.code_hostings USING btree (publisher_id);
+
 CREATE UNIQUE INDEX publishers_pkey ON public.publishers USING btree (id);
 
 CREATE UNIQUE INDEX software_pkey ON public.software USING btree (id);

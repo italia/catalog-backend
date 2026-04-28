@@ -6,6 +6,8 @@ CREATE TABLE code_hostings (
     is_group boolean NOT NULL DEFAULT TRUE
 );
 
+CREATE INDEX ON code_hostings (publisher_id);
+
 CREATE TRIGGER code_hostings_moddatetime
     BEFORE UPDATE ON code_hostings
     FOR EACH ROW
