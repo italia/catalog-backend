@@ -1,6 +1,6 @@
 CREATE TABLE code_hostings (
     id uuid DEFAULT uuidv7.uuidv7 () PRIMARY KEY,
-    publisher_id uuid NOT NULL REFERENCES publishers,
+    publisher_id uuid NOT NULL REFERENCES publishers ON DELETE CASCADE ON UPDATE CASCADE,
     updated_at timestamp with time zone,
     url text NOT NULL,
     is_group boolean NOT NULL DEFAULT TRUE

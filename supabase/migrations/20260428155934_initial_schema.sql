@@ -97,7 +97,7 @@ CREATE UNIQUE INDEX software_pkey ON public.software USING btree (id);
 
 ALTER TABLE "public"."code_hostings"
     ADD CONSTRAINT "code_hostings_pkey" PRIMARY KEY USING INDEX "code_hostings_pkey",
-    ADD CONSTRAINT "code_hostings_publisher_id_fkey" FOREIGN KEY (publisher_id) REFERENCES public.publishers (id) NOT valid, VALIDATE CONSTRAINT "code_hostings_publisher_id_fkey", ENABLE ROW LEVEL SECURITY;
+    ADD CONSTRAINT "code_hostings_publisher_id_fkey" FOREIGN KEY (publisher_id) REFERENCES public.publishers (id) ON UPDATE CASCADE ON DELETE CASCADE NOT valid, VALIDATE CONSTRAINT "code_hostings_publisher_id_fkey", ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."publishers"
     ADD CONSTRAINT "publishers_pkey" PRIMARY KEY USING INDEX "publishers_pkey", ENABLE ROW LEVEL SECURITY;
