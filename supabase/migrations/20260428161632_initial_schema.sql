@@ -82,8 +82,8 @@ CREATE TABLE "public"."publishers" (
 CREATE TABLE "public"."software" (
     "id" uuid NOT NULL DEFAULT uuidv7.uuidv7 (),
     "updated_at" timestamp with time zone,
-    "url" text NOT NULL,
     "publiccode" jsonb NOT NULL,
+    "url" text NOT NULL,
     "active" boolean NOT NULL DEFAULT TRUE
 );
 

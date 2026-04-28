@@ -1,8 +1,8 @@
 CREATE TABLE software (
     id uuid DEFAULT uuidv7.uuidv7 () PRIMARY KEY,
     updated_at timestamp with time zone,
-    url text NOT NULL,
     publiccode jsonb NOT NULL,
+    url text NOT NULL,
     active boolean NOT NULL DEFAULT TRUE
 );
 
