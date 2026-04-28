@@ -16,3 +16,14 @@ jobs:
       - run: supabase db diff -f diff
       - name: Check if repository is clean
         run: if [[ -n $(git status --porcelain) ]]; then exit 1; fi
+  sql-tests:
+    name: Run SQL tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: nixbuild/nix-quick-install-action@2c9db80fb984ceb1bcaa77cdda3fdf8cfba92035 # v34
+        with:
+          nix_version: 2.31.2
+      - uses: nicknovitski/nix-develop@9be7cfb4b10451d3390a75dc18ad0465bed4932a # v1
+      - run: supabase db start
+      - run: supabase db test
