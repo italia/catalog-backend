@@ -20,3 +20,9 @@ CREATE FUNCTION software_created_at (rec software)
 
 COMMENT ON FUNCTION software_created_at IS e'@graphql({"name": "createdAt"})';
 
+ALTER TABLE software ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Enable read access for all users" ON software AS PERMISSIVE
+    FOR SELECT TO public
+        USING (TRUE);
+

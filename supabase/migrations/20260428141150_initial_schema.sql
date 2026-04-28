@@ -2,6 +2,8 @@ CREATE EXTENSION IF NOT EXISTS "moddatetime" WITH SCHEMA "extensions";
 
 CREATE SCHEMA IF NOT EXISTS "uuidv7";
 
+SET check_function_bodies = OFF;
+
 CREATE OR REPLACE FUNCTION uuidv7.uuidv7 (timestamp with time zone DEFAULT clock_timestamp())
     RETURNS uuid
     LANGUAGE sql
@@ -93,13 +95,13 @@ CREATE UNIQUE INDEX software_pkey ON public.software USING btree (id);
 
 ALTER TABLE "public"."code_hostings"
     ADD CONSTRAINT "code_hostings_pkey" PRIMARY KEY USING INDEX "code_hostings_pkey",
-    ADD CONSTRAINT "code_hostings_publisher_id_fkey" FOREIGN KEY (publisher_id) REFERENCES public.publishers (id) NOT valid, VALIDATE CONSTRAINT "code_hostings_publisher_id_fkey";
+    ADD CONSTRAINT "code_hostings_publisher_id_fkey" FOREIGN KEY (publisher_id) REFERENCES public.publishers (id) NOT valid, VALIDATE CONSTRAINT "code_hostings_publisher_id_fkey", ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."publishers"
-    ADD CONSTRAINT "publishers_pkey" PRIMARY KEY USING INDEX "publishers_pkey";
+    ADD CONSTRAINT "publishers_pkey" PRIMARY KEY USING INDEX "publishers_pkey", ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."software"
-    ADD CONSTRAINT "software_pkey" PRIMARY KEY USING INDEX "software_pkey";
+    ADD CONSTRAINT "software_pkey" PRIMARY KEY USING INDEX "software_pkey", ENABLE ROW LEVEL SECURITY;
 
 SET check_function_bodies = OFF;
 
@@ -249,6 +251,18 @@ GRANT TRIGGER ON TABLE "public"."software" TO "service_role";
 GRANT TRUNCATE ON TABLE "public"."software" TO "service_role";
 
 GRANT UPDATE ON TABLE "public"."software" TO "service_role";
+
+CREATE POLICY "Enable read access for all users" ON "public"."code_hostings" AS permissive
+    FOR SELECT TO public
+        USING (TRUE);
+
+CREATE POLICY "Enable read access for all users" ON "public"."publishers" AS permissive
+    FOR SELECT TO public
+        USING (TRUE);
+
+CREATE POLICY "Enable read access for all users" ON "public"."software" AS permissive
+    FOR SELECT TO public
+        USING (TRUE);
 
 CREATE TRIGGER code_hostings_moddatetime
     BEFORE UPDATE ON public.code_hostings

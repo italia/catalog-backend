@@ -22,3 +22,9 @@ CREATE FUNCTION publishers_created_at (rec publishers)
 
 COMMENT ON FUNCTION publishers_created_at IS e'@graphql({"name": "createdAt"})';
 
+ALTER TABLE publishers ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Enable read access for all users" ON publishers AS PERMISSIVE
+    FOR SELECT TO public
+        USING (TRUE);
+

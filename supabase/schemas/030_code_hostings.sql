@@ -20,3 +20,9 @@ CREATE FUNCTION code_hostings_created_at (rec code_hostings)
 
 COMMENT ON FUNCTION code_hostings_created_at IS e'@graphql({"name": "createdAt"})';
 
+ALTER TABLE code_hostings ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Enable read access for all users" ON code_hostings AS PERMISSIVE
+    FOR SELECT TO public
+        USING (TRUE);
+
