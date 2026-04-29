@@ -8,6 +8,10 @@ CREATE TABLE code_hostings (
 
 CREATE INDEX ON code_hostings (publisher_id);
 
+COMMENT ON TABLE code_hostings IS '@graphql({"name": "CodeHosting", "description": "A code hosting site."})';
+
+COMMENT ON CONSTRAINT code_hostings_publisher_id_fkey ON code_hostings IS '@graphql({"local_name": "codeHostings"})';
+
 CREATE TRIGGER code_hostings_moddatetime
     BEFORE UPDATE ON code_hostings
     FOR EACH ROW
@@ -20,7 +24,7 @@ CREATE FUNCTION code_hostings_created_at (rec code_hostings)
         rec.id
 );
 
-COMMENT ON FUNCTION code_hostings_created_at IS e'@graphql({"name": "createdAt"})';
+COMMENT ON FUNCTION code_hostings_created_at IS '@graphql({"name": "createdAt"})';
 
 ALTER TABLE code_hostings ENABLE ROW LEVEL SECURITY;
 

@@ -281,3 +281,19 @@ CREATE TRIGGER software_moddatetime
     FOR EACH ROW
     EXECUTE FUNCTION extensions.moddatetime ('updated_at');
 
+COMMENT ON SCHEMA public IS '@graphql({"inflect_names": true})';
+
+COMMENT ON TABLE code_hostings IS '@graphql({"name": "CodeHosting", "description": "A code hosting site."})';
+
+COMMENT ON FUNCTION code_hostings_created_at IS '@graphql({"name": "createdAt"})';
+
+COMMENT ON CONSTRAINT code_hostings_publisher_id_fkey ON code_hostings IS '@graphql({"local_name": "codeHostings"})';
+
+COMMENT ON TABLE publishers IS '@graphql({"name": "Publisher", "description": "A publisher."})';
+
+COMMENT ON FUNCTION publishers_created_at IS '@graphql({"name": "createdAt"})';
+
+COMMENT ON TABLE software IS '@graphql({"name": "Software", "description": "A software."})';
+
+COMMENT ON FUNCTION software_created_at IS '@graphql({"name": "createdAt"})';
+

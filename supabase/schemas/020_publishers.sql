@@ -8,6 +8,8 @@ CREATE TABLE publishers (
     active boolean NOT NULL DEFAULT TRUE
 );
 
+COMMENT ON TABLE publishers IS '@graphql({"name": "Publisher", "description": "A publisher."})';
+
 CREATE TRIGGER publishers_moddatetime
     BEFORE UPDATE ON publishers
     FOR EACH ROW
@@ -20,7 +22,7 @@ CREATE FUNCTION publishers_created_at (rec publishers)
         rec.id
 );
 
-COMMENT ON FUNCTION publishers_created_at IS e'@graphql({"name": "createdAt"})';
+COMMENT ON FUNCTION publishers_created_at IS '@graphql({"name": "createdAt"})';
 
 ALTER TABLE publishers ENABLE ROW LEVEL SECURITY;
 

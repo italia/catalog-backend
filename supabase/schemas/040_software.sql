@@ -6,6 +6,8 @@ CREATE TABLE software (
     active boolean NOT NULL DEFAULT TRUE
 );
 
+COMMENT ON TABLE software IS '@graphql({"name": "Software", "description": "A software."})';
+
 CREATE TRIGGER software_moddatetime
     BEFORE UPDATE ON software
     FOR EACH ROW
@@ -18,7 +20,7 @@ CREATE FUNCTION software_created_at (rec software)
         rec.id
 );
 
-COMMENT ON FUNCTION software_created_at IS e'@graphql({"name": "createdAt"})';
+COMMENT ON FUNCTION software_created_at IS '@graphql({"name": "createdAt"})';
 
 ALTER TABLE software ENABLE ROW LEVEL SECURITY;
 
