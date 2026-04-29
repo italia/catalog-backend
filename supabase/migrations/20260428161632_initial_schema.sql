@@ -75,7 +75,6 @@ CREATE TABLE "public"."publishers" (
     "email" text NOT NULL,
     "description" text,
     "alternative_id" text,
-    "url" text,
     "active" boolean NOT NULL DEFAULT TRUE
 );
 
