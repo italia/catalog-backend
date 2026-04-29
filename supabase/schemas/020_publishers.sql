@@ -3,7 +3,7 @@ CREATE TABLE publishers (
     updated_at timestamp with time zone,
     email text NOT NULL,
     description text,
-    alternativeId text,
+    alternative_id text,
     url text,
     active boolean NOT NULL DEFAULT TRUE
 );

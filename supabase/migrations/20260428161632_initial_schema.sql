@@ -74,7 +74,7 @@ CREATE TABLE "public"."publishers" (
     "updated_at" timestamp with time zone,
     "email" text NOT NULL,
     "description" text,
-    "alternativeid" text,
+    "alternative_id" text,
     "url" text,
     "active" boolean NOT NULL DEFAULT TRUE
 );
