@@ -1,9 +1,9 @@
 CREATE TABLE publishers (
     id uuid DEFAULT uuidv7.uuidv7 () PRIMARY KEY,
     updated_at timestamp with time zone,
-    email text NOT NULL,
-    description text,
-    alternative_id text,
+    description citext NOT NULL UNIQUE,
+    email citext NOT NULL,
+    alternative_id citext UNIQUE,
     active boolean NOT NULL DEFAULT TRUE
 );
 

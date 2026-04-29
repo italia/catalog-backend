@@ -9,8 +9,8 @@ SELECT
 SELECT
     results_eq ($$
         SELECT
-            pg_column_size(ROW ('00000000-0000-0000-0000-000000000000', 'epoch', 'test@example.com', 'foo', 'pcm', TRUE)::publishers) $$, $$
-        VALUES (74) $$, 'Size of a “publishers” row');
+            pg_column_size(ROW ('00000000-0000-0000-0000-000000000000', 'epoch', 'Acme Inc.', 'test@example.com', 'pcm', TRUE)::publishers) $$, $$
+        VALUES (80) $$, 'Size of a “publishers” row');
 SELECT
     results_eq ($$
         SELECT

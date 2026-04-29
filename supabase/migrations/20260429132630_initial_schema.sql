@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS "citext" WITH SCHEMA "extensions";
+
 CREATE EXTENSION IF NOT EXISTS "moddatetime" WITH SCHEMA "extensions";
 
 CREATE SCHEMA IF NOT EXISTS "uuidv7";
@@ -65,16 +67,16 @@ CREATE TABLE "public"."code_hostings" (
     "id" uuid NOT NULL DEFAULT uuidv7.uuidv7 (),
     "publisher_id" uuid NOT NULL,
     "updated_at" timestamp with time zone,
-    "url" text NOT NULL,
+    "url" extensions.citext NOT NULL,
     "is_group" boolean NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE "public"."publishers" (
     "id" uuid NOT NULL DEFAULT uuidv7.uuidv7 (),
     "updated_at" timestamp with time zone,
-    "email" text NOT NULL,
-    "description" text,
-    "alternative_id" text,
+    "description" extensions.citext NOT NULL,
+    "email" extensions.citext NOT NULL,
+    "alternative_id" extensions.citext,
     "active" boolean NOT NULL DEFAULT TRUE
 );
 
@@ -82,7 +84,7 @@ CREATE TABLE "public"."software" (
     "id" uuid NOT NULL DEFAULT uuidv7.uuidv7 (),
     "updated_at" timestamp with time zone,
     "publiccode" jsonb NOT NULL,
-    "url" text NOT NULL,
+    "url" extensions.citext NOT NULL,
     "active" boolean NOT NULL DEFAULT TRUE
 );
 
@@ -90,19 +92,31 @@ CREATE UNIQUE INDEX code_hostings_pkey ON public.code_hostings USING btree (id);
 
 CREATE INDEX code_hostings_publisher_id_idx ON public.code_hostings USING btree (publisher_id);
 
+CREATE UNIQUE INDEX code_hostings_url_key ON public.code_hostings USING btree (url);
+
+CREATE UNIQUE INDEX publishers_alternative_id_key ON public.publishers USING btree (alternative_id);
+
+CREATE UNIQUE INDEX publishers_description_key ON public.publishers USING btree (description);
+
 CREATE UNIQUE INDEX publishers_pkey ON public.publishers USING btree (id);
 
 CREATE UNIQUE INDEX software_pkey ON public.software USING btree (id);
 
+CREATE UNIQUE INDEX software_url_key ON public.software USING btree (url);
+
 ALTER TABLE "public"."code_hostings"
     ADD CONSTRAINT "code_hostings_pkey" PRIMARY KEY USING INDEX "code_hostings_pkey",
-    ADD CONSTRAINT "code_hostings_publisher_id_fkey" FOREIGN KEY (publisher_id) REFERENCES public.publishers (id) ON UPDATE CASCADE ON DELETE CASCADE NOT valid, VALIDATE CONSTRAINT "code_hostings_publisher_id_fkey", ENABLE ROW LEVEL SECURITY;
+    ADD CONSTRAINT "code_hostings_publisher_id_fkey" FOREIGN KEY (publisher_id) REFERENCES public.publishers (id) ON UPDATE CASCADE ON DELETE CASCADE NOT valid, VALIDATE CONSTRAINT "code_hostings_publisher_id_fkey", ENABLE ROW LEVEL SECURITY,
+    ADD CONSTRAINT "code_hostings_url_key" UNIQUE USING INDEX "code_hostings_url_key";
 
 ALTER TABLE "public"."publishers"
-    ADD CONSTRAINT "publishers_pkey" PRIMARY KEY USING INDEX "publishers_pkey", ENABLE ROW LEVEL SECURITY;
+    ADD CONSTRAINT "publishers_pkey" PRIMARY KEY USING INDEX "publishers_pkey", ENABLE ROW LEVEL SECURITY,
+    ADD CONSTRAINT "publishers_alternative_id_key" UNIQUE USING INDEX "publishers_alternative_id_key",
+    ADD CONSTRAINT "publishers_description_key" UNIQUE USING INDEX "publishers_description_key";
 
 ALTER TABLE "public"."software"
-    ADD CONSTRAINT "software_pkey" PRIMARY KEY USING INDEX "software_pkey", ENABLE ROW LEVEL SECURITY;
+    ADD CONSTRAINT "software_pkey" PRIMARY KEY USING INDEX "software_pkey", ENABLE ROW LEVEL SECURITY,
+    ADD CONSTRAINT "software_url_key" UNIQUE USING INDEX "software_url_key";
 
 SET check_function_bodies = OFF;
 
