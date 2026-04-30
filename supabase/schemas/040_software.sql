@@ -28,3 +28,16 @@ CREATE POLICY "Enable read access for all users" ON software AS PERMISSIVE
     FOR SELECT TO public
         USING (TRUE);
 
+CREATE FUNCTION software_fts (pc jsonb)
+    RETURNS tsvector IMMUTABLE STRICT
+    LANGUAGE sql
+    SET search_path = '' RETURN setweight (
+to_tsvector('simple', coalesce(pc ->> 'name', '')), 'A') || setweight (
+to_tsvector('italian', coalesce(pc -> 'description' -> 'it' ->> 'shortDescription', '')), 'B') || setweight (
+to_tsvector('italian', coalesce(pc -> 'description' -> 'IT' ->> 'shortDescription', '')), 'B') || setweight (
+to_tsvector('italian', coalesce(pc -> 'description' -> 'it' ->> 'longDescription', '')), 'C') || setweight (
+to_tsvector('italian', coalesce(pc -> 'description' -> 'IT' ->> 'longDescription', '')), 'C'
+);
+
+CREATE INDEX ON software USING gin (software_fts (publiccode));
+

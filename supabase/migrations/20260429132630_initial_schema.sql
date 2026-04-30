@@ -141,6 +141,14 @@ CREATE OR REPLACE FUNCTION public.software_created_at (rec public.software)
     SET search_path TO '' RETURN uuidv7.uuidv7_extract_timestamp ((rec).id
 );
 
+CREATE OR REPLACE FUNCTION public.software_fts (pc jsonb)
+    RETURNS tsvector
+    LANGUAGE sql
+    IMMUTABLE STRICT
+    SET search_path TO '' RETURN ((((setweight(to_tsvector('simple'::regconfig, COALESCE((pc ->> 'name'::text), ''::text)), 'A'::"char") || setweight(to_tsvector('italian'::regconfig, COALESCE((((pc -> 'description'::text) -> 'it'::text) ->> 'shortDescription'::text), ''::text)), 'B'::"char")) || setweight(to_tsvector('italian'::regconfig, COALESCE((((pc -> 'description'::text) -> 'IT'::text) ->> 'shortDescription'::text), ''::text)), 'B'::"char")) || setweight(to_tsvector('italian'::regconfig, COALESCE((((pc -> 'description'::text) -> 'it'::text) ->> 'longDescription'::text), ''::text)), 'C'::"char")) || setweight(to_tsvector('italian'::regconfig, COALESCE((((pc -> 'description'::text) -> 'IT'::text) ->> 'longDescription'::text), ''::text)), 'C'::"char"));
+
+CREATE INDEX software_software_fts_idx ON public.software USING gin (public.software_fts (publiccode));
+
 GRANT DELETE ON TABLE "public"."code_hostings" TO "anon";
 
 GRANT INSERT ON TABLE "public"."code_hostings" TO "anon";
