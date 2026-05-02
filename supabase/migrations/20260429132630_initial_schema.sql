@@ -82,6 +82,7 @@ CREATE TABLE "public"."publishers" (
 
 CREATE TABLE "public"."software" (
     "id" uuid NOT NULL DEFAULT uuidv7.uuidv7 (),
+    "code_hosting_id" uuid NOT NULL,
     "updated_at" timestamp with time zone,
     "publiccode" jsonb NOT NULL,
     "url" extensions.citext NOT NULL,
@@ -102,6 +103,8 @@ CREATE UNIQUE INDEX publishers_pkey ON public.publishers USING btree (id);
 
 CREATE UNIQUE INDEX software_pkey ON public.software USING btree (id);
 
+CREATE INDEX software_code_hosting_id_idx ON public.software USING btree (code_hosting_id);
+
 CREATE UNIQUE INDEX software_url_key ON public.software USING btree (url);
 
 ALTER TABLE "public"."code_hostings"
@@ -115,7 +118,8 @@ ALTER TABLE "public"."publishers"
     ADD CONSTRAINT "publishers_description_key" UNIQUE USING INDEX "publishers_description_key";
 
 ALTER TABLE "public"."software"
-    ADD CONSTRAINT "software_pkey" PRIMARY KEY USING INDEX "software_pkey", ENABLE ROW LEVEL SECURITY,
+    ADD CONSTRAINT "software_pkey" PRIMARY KEY USING INDEX "software_pkey",
+    ADD CONSTRAINT "software_code_hosting_id_fkey" FOREIGN KEY (code_hosting_id) REFERENCES public.code_hostings (id) ON UPDATE CASCADE ON DELETE CASCADE NOT valid, VALIDATE CONSTRAINT "software_code_hosting_id_fkey", ENABLE ROW LEVEL SECURITY,
     ADD CONSTRAINT "software_url_key" UNIQUE USING INDEX "software_url_key";
 
 SET check_function_bodies = OFF;
@@ -317,4 +321,6 @@ COMMENT ON FUNCTION publishers_created_at IS '@graphql({"name": "createdAt"})';
 COMMENT ON TABLE software IS '@graphql({"name": "Software", "description": "A software."})';
 
 COMMENT ON FUNCTION software_created_at IS '@graphql({"name": "createdAt"})';
+
+COMMENT ON CONSTRAINT software_code_hosting_id_fkey ON software IS '@graphql({"local_name": "software"})';
 

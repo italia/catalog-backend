@@ -1,12 +1,17 @@
 CREATE TABLE software (
     id uuid DEFAULT uuidv7.uuidv7 () PRIMARY KEY,
+    code_hosting_id uuid NOT NULL REFERENCES code_hostings ON DELETE CASCADE ON UPDATE CASCADE,
     updated_at timestamp with time zone,
     publiccode jsonb NOT NULL,
     url citext NOT NULL UNIQUE,
     active boolean NOT NULL DEFAULT TRUE
 );
 
+CREATE INDEX ON software (code_hosting_id);
+
 COMMENT ON TABLE software IS '@graphql({"name": "Software", "description": "A software."})';
+
+COMMENT ON CONSTRAINT software_code_hosting_id_fkey ON software IS '@graphql({"local_name": "software"})';
 
 CREATE TRIGGER software_moddatetime
     BEFORE UPDATE ON software
