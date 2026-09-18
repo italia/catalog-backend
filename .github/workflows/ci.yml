@@ -6,7 +6,7 @@ on:
 jobs:
   migrations-up-to-date:
     name: Check if migrations are up to date
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: nixbuild/nix-quick-install-action@2c9db80fb984ceb1bcaa77cdda3fdf8cfba92035 # v34
@@ -18,7 +18,7 @@ jobs:
         run: if [[ -n $(git status --porcelain) ]]; then exit 1; fi
   sql-tests:
     name: Run SQL tests
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: nixbuild/nix-quick-install-action@2c9db80fb984ceb1bcaa77cdda3fdf8cfba92035 # v34
